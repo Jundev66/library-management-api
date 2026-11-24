@@ -14,11 +14,11 @@ En una API REST moderna con Laravel, las capas de MVC se traducen limpiamente en
 
 | Ticket | Directorio | Alcance | Enfoque |
 |---|---|---|---|
-| **Ticket 01** | [`ticket-01-core-schema-infrastructure`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/plans/ticket-01-core-schema-infrastructure/plan.md) | Base de datos, Migraciones, Seeders e Infraestructura API (`ForceJsonResponse`, Exception Handler) | SDD |
-| **Ticket 02** | [`ticket-02-category-module`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/plans/ticket-02-category-module/plan.md) | Módulo Categorías (Model, CategoryService, Form Requests, CategoryResource, Regla de negocio anti-eliminación) | SDD |
-| **Ticket 03** | [`ticket-03-book-write-operations`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/plans/ticket-03-book-write-operations/plan.md) | Módulo Libros - Mutaciones (StoreBookRequest, UpdateBookRequest, BookService, verificación de existencia) | SDD |
-| **Ticket 04** | [`ticket-04-book-read-filtering`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/plans/ticket-04-book-read-filtering/plan.md) | Módulo Libros - Lectura y Filtrado (`GET /books`, `GET /books?category={id}`, Query Scopes, Anti N+1 con Eager Loading) | SDD |
-| **Ticket 05** | [`ticket-05-qa-docs-adversarial-review`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/plans/ticket-05-qa-docs-adversarial-review/plan.md) | Documentación OpenAPI 3.0, Colección Postman, Matriz Adversarial de QA y Auditoría de Código | SDD |
+| **Ticket 01** | [`ticket-01-core-schema-infrastructure`](ticket-01-core-schema-infrastructure/plan.md) | Base de datos, Migraciones, Seeders e Infraestructura API (`ForceJsonResponse`, Exception Handler) | SDD |
+| **Ticket 02** | [`ticket-02-category-module`](ticket-02-category-module/plan.md) | Módulo Categorías (Model, CategoryService, Form Requests, CategoryResource, Regla de negocio anti-eliminación) | SDD |
+| **Ticket 03** | [`ticket-03-book-write-operations`](ticket-03-book-write-operations/plan.md) | Módulo Libros - Mutaciones (StoreBookRequest, UpdateBookRequest, BookService, verificación de existencia) | SDD |
+| **Ticket 04** | [`ticket-04-book-read-filtering`](ticket-04-book-read-filtering/plan.md) | Módulo Libros - Lectura y Filtrado (`GET /books`, `GET /books?category={id}`, Query Scopes, Anti N+1 con Eager Loading) | SDD |
+| **Ticket 05** | [`ticket-05-qa-docs-adversarial-review`](ticket-05-qa-docs-adversarial-review/plan.md) | Documentación OpenAPI 3.0, Colección Postman, Matriz Adversarial de QA y Auditoría de Código | SDD |
 
 ---
 

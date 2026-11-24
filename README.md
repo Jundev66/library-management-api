@@ -19,13 +19,16 @@ Aplicación de alto rendimiento para la gestión de una biblioteca de libros y c
 
 ## 🚀 Puesta en Marcha con Docker (100% Automatizada)
 
-El contenedor cuenta con un script de entrada defensivo ([entrypoint.sh](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/docker/entrypoint.sh)) que al levantarse:
-1. Copia `.env.example` a `.env` si no existe.
+El contenedor cuenta con un script de entrada defensivo ([entrypoint.sh](docker/entrypoint.sh)) que al levantarse:
+1. Copia `.env.example` a `.env` de forma automática si este no existe (evitando subir credenciales a Git).
 2. Instala dependencias con Composer si faltan.
 3. Genera la `APP_KEY` si no está configurada.
 4. Espera a que MySQL esté saludable (`healthcheck`).
 5. Ejecuta las migraciones y seeders de forma automática e idempotente.
 6. Inicia el servidor HTTP en el puerto `8000`.
+
+> [!NOTE]
+> **Gestión de `.env`**: Gracias a la automatización de Docker, no necesitás crear manualmente el `.env`. El contenedor lo aprovisiona desde `.env.example`. El archivo `.env` está estrictamente ignorado en `.gitignore` para proteger secretos. Si optás por correr el proyecto localmente sin Docker, ejecutá `cp .env.example .env && php artisan key:generate`.
 
 ### 1. Requisitos Previos
 - [Docker](https://www.docker.com/) y Docker Compose v2+.
@@ -66,8 +69,9 @@ docker compose exec app php artisan test
 *Resultado: **44 tests pasados (157 aserciones)** al 100%.*
 
 ### 2. Pruebas E2E Adversariales y de Concurrencia (Playwright)
-Validan flujos nominales, inyecciones SQL/XSS, type juggling, límites de frontera y condiciones de carrera concurrentes:
+Las pruebas E2E corren desde el host hacia el contenedor. Asegurate de tener las dependencias de Node instaladas:
 ```bash
+npm install
 npx playwright test
 ```
 *Resultado: **11 tests pasados**.*
@@ -91,8 +95,8 @@ Para facilitar las pruebas manuales y el consumo inmediato de la API de libros (
 ## 📖 Documentación Formal de la API
 
 La especificación OpenAPI y la colección de Postman se encuentran en `docs/`:
-- **Especificación OpenAPI 3.0**: [`docs/openapi.yaml`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/docs/openapi.yaml) (compatible con Swagger Editor / Redoc).
-- **Colección de Postman**: [`docs/library-api.postman_collection.json`](file:///C:/Users/PC/Desktop/preuba%20tecnica%20-%20!gaming/docs/library-api.postman_collection.json) (con variables de entorno y assertions).
+- **Especificación OpenAPI 3.0**: [`docs/openapi.yaml`](docs/openapi.yaml) (compatible con Swagger Editor / Redoc).
+- **Colección de Postman**: [`docs/library-api.postman_collection.json`](docs/library-api.postman_collection.json) (con variables de entorno y assertions).
 
 ---
 
