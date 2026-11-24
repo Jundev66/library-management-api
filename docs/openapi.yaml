@@ -1,0 +1,322 @@
+openapi: 3.0.3
+info:
+  title: Library Management API
+  description: RESTful API for managing a book library and categories using Laravel 11 and Clean MVC.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Local Docker Environment
+
+paths:
+  /categories:
+    get:
+      summary: List all categories
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+    post:
+      summary: Create a new category
+      tags:
+        - Categories
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: "Filosofía"
+      responses:
+        '201':
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Category'
+        '422':
+          description: Validation error (e.g. name already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /categories/{id}:
+    delete:
+      summary: Delete a category
+      description: Deletes a category if it has no associated books.
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: Category deleted successfully
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '409':
+          description: Conflict - Category has associated books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cannot delete category because it has associated books."
+
+  /books:
+    get:
+      summary: List books with optional category filter
+      tags:
+        - Books
+      parameters:
+        - name: category
+          in: query
+          required: false
+          description: Filter books by category ID
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+    post:
+      summary: Create a new book
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - author
+                - published_year
+                - category_id
+              properties:
+                title:
+                  type: string
+                  minLength: 3
+                  example: "Rayuela"
+                author:
+                  type: string
+                  example: "Julio Cortázar"
+                description:
+                  type: string
+                  nullable: true
+                  example: "Novela introspectiva contranovela."
+                published_year:
+                  type: integer
+                  example: 1963
+                category_id:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Book'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /books/{id}:
+    put:
+      summary: Update an existing book
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - author
+                - published_year
+                - category_id
+              properties:
+                title:
+                  type: string
+                  minLength: 3
+                  example: "Rayuela (Edición Conmemorativa)"
+                author:
+                  type: string
+                  example: "Julio Cortázar"
+                description:
+                  type: string
+                  nullable: true
+                  example: "Edición crítica con notas."
+                published_year:
+                  type: integer
+                  example: 1963
+                category_id:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+    delete:
+      summary: Delete a book
+      description: Verifies existence before deleting the book.
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '204':
+          description: Book deleted successfully
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ficción"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Cien años de soledad"
+        author:
+          type: string
+          example: "Gabriel García Márquez"
+        description:
+          type: string
+          nullable: true
+          example: "La historia de la familia Buendía."
+        published_year:
+          type: integer
+          example: 1967
+        category_id:
+          type: integer
+          example: 1
+        category:
+          $ref: '#/components/schemas/Category'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "The given data was invalid."
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+    NotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Resource not found."
