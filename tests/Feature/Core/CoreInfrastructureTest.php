@@ -53,4 +53,15 @@ final class CoreInfrastructureTest extends TestCase
             ->assertHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
             ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
     }
+
+    public function test_method_not_allowed_returns_json_405(): void
+    {
+        $response = $this->post('/api/health');
+
+        $response->assertStatus(405)
+            ->assertHeader('content-type', 'application/json')
+            ->assertJson([
+                'message' => 'Method not allowed.',
+            ]);
+    }
 }
